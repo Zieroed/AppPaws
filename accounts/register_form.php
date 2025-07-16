@@ -2,7 +2,7 @@
 <div class="hidden" id="register">
     <div class="registration">
         <span class="close" onclick="closeRegister()">&times</span>
-        <h2>Become a Paw-tner</h2>
+        <h2 style="color: #f88624;">Become a Paw-tner</h2>
         <p>Join the pack and enjoy the purr-mium care that'll have tails wagging and whiskers twitching!</p>
         
         <form action="index.php" method="post" onsubmit="return confirmPassword()">

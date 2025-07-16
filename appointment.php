@@ -17,6 +17,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $consultation_type = mysqli_real_escape_string($conn, $_POST["consultation_type"]);
     $message = mysqli_real_escape_string($conn, $_POST["message"]);
 
+    // Insert pet if not already in pets table for this user
+    $pet_check_sql = "SELECT id FROM pets WHERE user_id = ? AND name = ? AND type = ?";
+    $pet_check_stmt = mysqli_prepare($conn, $pet_check_sql);
+    mysqli_stmt_bind_param($pet_check_stmt, "iss", $user_id, $pet_name, $pet_type);
+    mysqli_stmt_execute($pet_check_stmt);
+    mysqli_stmt_store_result($pet_check_stmt);
+    if (mysqli_stmt_num_rows($pet_check_stmt) == 0) {
+        $pet_insert_sql = "INSERT INTO pets (user_id, name, type) VALUES (?, ?, ?)";
+        $pet_insert_stmt = mysqli_prepare($conn, $pet_insert_sql);
+        mysqli_stmt_bind_param($pet_insert_stmt, "iss", $user_id, $pet_name, $pet_type);
+        mysqli_stmt_execute($pet_insert_stmt);
+        mysqli_stmt_close($pet_insert_stmt);
+    }
+    mysqli_stmt_close($pet_check_stmt);
+
     // Insert into appointments
     $sql = "INSERT INTO appointments (user_id, pet_name, pet_type, preferred_date, consultation_type, message, status)
             VALUES (?, ?, ?, ?, ?, ?, 'pending')";
@@ -41,43 +56,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
 <?php include("includes/header.php"); ?>
 
-<div class="container">
-    <h2>Schedule an Appointment</h2>
-
-    <?php if (isset($success)) echo "<p style='color: green;'>$success</p>"; ?>
-    <?php if (isset($error)) echo "<p style='color: red;'>$error</p>"; ?>
-
-    <form action="appointments.php" method="POST" class="form-box">
-        <label>Pet Name:</label>
-        <input type="text" name="pet_name" required>
-
-        <label>Pet Type:</label>
-        <select name="pet_type" required>
-            <option value="">Select type</option>
-            <option>Dog</option>
-            <option>Cat</option>
-            <option>Bird</option>
-            <option>Rabbit</option>
-            <option>Others</option>
-        </select>
-
-        <label>Preferred Date:</label>
-        <input type="date" name="preferred_date" required>
-
-        <label>Consultation Type:</label>
-        <select name="consultation_type" required>
-            <option value="">Select type</option>
-            <option>Vaccination</option>
-            <option>Check-up</option>
-            <option>Grooming</option>
-            <option>Emergency</option>
-        </select>
-
-        <label>Additional Message:</label>
-        <textarea name="message" rows="4" placeholder="Write any specific concerns or requests..."></textarea>
-
-        <button type="submit">Book Appointment</button>
-    </form>
+<div class="appt-split-layout">
+    <div class="appt-left">
+        <h2 class="appointment-title">Schedule an Appointment</h2>
+        <p class="appt-desc">Feathers, fur, or little feet, we make every visit a treat.<br>
+        Let's keep your pet pals happy, healthy, and complete!</p>
+    </div>
+    <div class="appt-right">
+        <?php if (isset($success)) echo "<p style='color: green;'>$success</p>"; ?>
+        <?php if (isset($error)) echo "<p style='color: red;'>$error</p>"; ?>
+        <form action="appointment.php" method="POST" class="appointment-form-circle appointment-form-wide">
+            <input type="text" name="pet_name" placeholder="Pet Name" required>
+            <select name="pet_type" required>
+                <option value="">Type</option>
+                <option>Dog</option>
+                <option>Cat</option>
+                <option>Bird</option>
+                <option>Rabbit</option>
+                <option>Others</option>
+            </select>
+            <input type="date" name="preferred_date" required>
+            <select name="consultation_type" required>
+                <option value="">Consultation Type</option>
+                <option>Vaccination</option>
+                <option>Check-up</option>
+                <option>Grooming</option>
+                <option>Emergency</option>
+            </select>
+            <textarea name="message" rows="4" placeholder="Write any specific concerns or requests..."></textarea>
+            <input class="submit" type="submit" value="Book Appointment">
+        </form>
+    </div>
 </div>
 
 <?php include("includes/footer.php"); ?>

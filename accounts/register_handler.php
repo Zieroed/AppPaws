@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["role"] = "user";
 
         // Redirect to user page
-        header("Location: newpage.php");
+        header("Location: index.php");
         exit();
     } else {
         echo "<p>Registration failed: " . mysqli_error($conn) . "</p>";

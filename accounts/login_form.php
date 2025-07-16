@@ -2,7 +2,7 @@
 <div class="hidden" id="login-popup">
     <div class="registration" >
         <span class="close" onclick="closeLogin()">&times;</span>
-        <h2>Hop In</h2>
+        <h2 style="color: #f88624;">Hop In</h2>
         <p>Welcome back to Happy Paws - where tails wag and care is never ruff!</p>
 
         <form method="post" action="index.php">
