@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Insert into appointments
     $sql = "INSERT INTO appointments (user_id, pet_name, pet_type, preferred_date, consultation_type, message, status)
-            VALUES (?, ?, ?, ?, ?, ?, 'pending')";
+            VALUES (?, ?, ?, ?, ?, ?, 'Pending')";
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, "isssss", $user_id, $pet_name, $pet_type, $preferred_date, $consultation_type, $message);
 
@@ -55,40 +55,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body>
 <?php include("includes/header.php"); ?>
-
-<div class="appt-split-layout">
-    <div class="appt-left">
-        <h2 class="appointment-title">Schedule an Appointment</h2>
-        <p class="appt-desc">Feathers, fur, or little feet, we make every visit a treat.<br>
-        Let's keep your pet pals happy, healthy, and complete!</p>
-    </div>
-    <div class="appt-right">
-        <?php if (isset($success)) echo "<p style='color: green;'>$success</p>"; ?>
-        <?php if (isset($error)) echo "<p style='color: red;'>$error</p>"; ?>
-        <form action="appointment.php" method="POST" class="appointment-form-circle appointment-form-wide">
-            <input type="text" name="pet_name" placeholder="Pet Name" required>
-            <select name="pet_type" required>
-                <option value="">Type</option>
-                <option>Dog</option>
-                <option>Cat</option>
-                <option>Bird</option>
-                <option>Rabbit</option>
-                <option>Others</option>
-            </select>
-            <input type="date" name="preferred_date" required>
-            <select name="consultation_type" required>
-                <option value="">Consultation Type</option>
-                <option>Vaccination</option>
-                <option>Check-up</option>
-                <option>Grooming</option>
-                <option>Emergency</option>
-            </select>
-            <textarea name="message" rows="4" placeholder="Write any specific concerns or requests..."></textarea>
-            <input class="submit" type="submit" value="Book Appointment">
-        </form>
-    </div>
+<div class="page-wrapper">
+    <main>
+        <div class="appt-split-layout">
+            <div class="appt-left">
+                <h2 class="appointment-title">Schedule an Appointment</h2>
+                <p class="appt-desc">Feathers, fur, or little feet, we make every visit a treat.<br>
+                Let's keep your pet pals happy, healthy, and complete!</p>
+            </div>
+            <div class="appt-right">
+                <?php if (isset($success)) echo "<p style='color: green;'>$success</p>"; ?>
+                <?php if (isset($error)) echo "<p style='color: red;'>$error</p>"; ?>
+                <form action="appointment.php" method="POST" class="appointment-form-circle appointment-form-wide">
+                    <input type="text" name="pet_name" placeholder="Pet Name" required>
+                    <select name="pet_type" required>
+                        <option value="">Pet Type</option>
+                        <option>Dog</option>
+                        <option>Cat</option>
+                        <option>Bird</option>
+                        <option>Rabbit</option>
+                        <option>Others</option>
+                    </select>
+                    <input type="date" name="preferred_date" required>
+                    <select name="consultation_type" required>
+                        <option value="">Consultation Type</option>
+                        <option>Vaccination</option>
+                        <option>Check-up</option>
+                        <option>Grooming</option>
+                        <option>Emergency</option>
+                    </select>
+                    <textarea name="message" rows="4" placeholder="Write any specific concerns or requests..."></textarea>
+                    <input class="submit" type="submit" value="Book Appointment">
+                </form>
+            </div>
+        </div>
+    </main>
+    <?php include("includes/footer.php"); ?>
 </div>
-
-<?php include("includes/footer.php"); ?>
 </body>
 </html>
