@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Success: start session
             $_SESSION["user_id"] = $user["id"];
             $_SESSION["fname"] = $user["fname"];
+            $_SESSION["username"] = $user["username"];
             $_SESSION["lname"] = $user["lname"];
             $_SESSION["role"] = $user["role"];
 

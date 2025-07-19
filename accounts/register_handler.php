@@ -46,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Start session and store user info
         $_SESSION["user_id"] = $user_id;
         $_SESSION["fname"] = $fname;
+        $_SESSION["username"] = $user["username"];
         $_SESSION["lname"] = $lname;
         $_SESSION["role"] = "user";
 

@@ -35,10 +35,10 @@
                     <a onclick="showRegister()">Community</a>
                 <?php endif; ?>
 
-                <a href="/AppPaws/about.php" class="<?php echo ($current == 'about.php') ? 'active' : ''; ?>">About</a>
+                <a href="/AppPaws/index.php#about" class="<?php echo ($current == 'about.php') ? 'active' : ''; ?>">About</a>
 
                 <?php if (isset($_SESSION["fname"])): ?>
-                    <a>User: <?php echo $_SESSION["fname"] . $_SESSION["lname"]; ?></a>
+                    <a>User: <?php echo $_SESSION["username"]; ?></a>
 
                     <!-- Logout Form as button styled like a link -->
                     <form id="myform" action="/AppPaws/accounts/logout.php" method="post" style="margin:0; padding:0; border:none; background:none; display:inline;">

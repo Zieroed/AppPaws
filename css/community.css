@@ -1,0 +1,867 @@
+/* ========================= */
+/* GLOBAL STYLES            */
+/* ========================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: #fff;
+  color: #333;
+}
+
+.hidden {
+    display: none;
+}
+.blur {
+    filter: blur(1.5px);
+}
+.container {
+    width: 92%;
+    margin: auto;
+    height: 100%;
+}
+
+/* ========================= */
+/* HEADER & NAVIGATION      */
+/* ========================= */
+header, footer {
+    height: 80px;
+    overflow: hidden;
+    background-color: white;
+}
+header a {
+    float: left;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 25px;
+    border-radius: 4px;
+    min-width: 80px;
+    padding: 10px;
+}
+header a:hover {
+    background-color: #e06d00;
+    color: white;
+    cursor: pointer;
+}
+header a.title {
+    font-size: 25px;
+    font-weight: bold;
+}
+header a.title img {
+    display: block;
+    height: 60px;
+    margin: 0 auto;
+}
+header a.active {
+    color: #f88624;
+}
+header a.active:hover {
+    background-color: #e06d00;
+    color: white;
+}
+header a.user {
+    border-style: solid;
+    border-radius: 20px;
+    background-color: black;
+}
+.header-right {
+    float: right;
+}
+header a.title:hover img,
+header a.title img:hover {
+    background: none;
+    filter: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+header a.title {
+    background: none !important;
+    color: inherit !important;
+}
+header a.title:hover {
+    background: none !important;
+    color: inherit !important;
+}
+
+/* ========================= */
+/* HOMEPAGE STYLES           */
+/* ========================= */
+
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 5rem;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/AppPaws/assets/animalBackgroundHomePage.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.welcome-title {
+  font-size: 2.5rem;
+  margin-bottom: 0;
+}
+.happypaws-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.happypaws-title span {
+  color: #f88624;
+}
+
+.hero-text p {
+  margin: 0.5rem 0;
+}
+.hero-text button {
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  border: 2px solid #f88624;
+  background-color: transparent;
+  color: #f88624;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.hero-text button:hover{
+  background-color: #f88624;
+  color: white;
+}
+
+.hero-image img {
+  width: 400px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin-left: 20px;
+}
+
+.branding {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.business-name {
+  height: 40px;
+  width: auto;
+}
+
+/* Section Styles */
+.clinic-section,
+.about-section,
+.services-section {
+  margin: 0 auto;
+  padding: 60px 20px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.clinic-section h1,
+.about-section h1 {
+  color: #f88624;
+  margin-bottom: 20px;
+}
+
+.services-section h1 {
+  color: white;
+  margin-bottom: 20px;
+}
+
+.clinic-section p,
+.about-section .description p,
+.services-section p {
+  max-width: 800px;
+  margin: 0 auto 20px auto;
+  line-height: 1.6;
+}
+
+.map-image {
+  width: 100%;
+  max-width: 800px;
+  border-radius: 10px;
+  margin-top: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.address {
+  font-style: italic;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+/* Services Section */
+.services-container,
+.services-section{
+  background-color: #f88624;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+}
+.services-section {
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.service-card {
+  border: 2px solid white;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+  display: flex;
+  gap: 15px;
+  align-items: stretch;
+  background: transparent;
+  width: 100%;
+}
+
+.service-card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.others-card-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.others-card {
+  max-width: 600px;
+  width: 100%;
+}
+
+.vet-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin: 40px 0;
+}
+
+.vet-bio {
+  max-width: 300px;
+  text-align: left;
+}
+
+.vet-bio h3 {
+  color: #f88624;
+  font-style: italic;
+}
+
+.vet-image img {
+  width: 250px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.images-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.images-container img {
+  width: 250px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-text,
+  .hero-image {
+    max-width: 100%;
+  }
+
+  .hero-image img {
+    width: 80%;
+    margin-top: 2rem;
+    margin-left: 0;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .others-card {
+    max-width: 90%;
+  }
+}
+
+/* ========================= */
+/* FOOTER                    */
+/* ========================= */
+footer {
+    background-color: #f88624 !important;
+    color: white !important;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    margin-top: 50px;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.page-wrapper > main {
+    flex: 1;
+}
+
+/* ========================= */
+/* APPOINTMENTS PAGE         */
+/* ========================= */
+.appt-split-layout {
+    margin-top: 5%;
+    display: flex;
+}
+.appt-left, .appt-right {
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 30px;
+}
+.appt-left {
+    background: #fff;
+    text-align: center;
+}
+.appt-left .appointment-title,
+.appt-left .appt-desc {
+    text-align: center;
+}
+.appt-right form {
+    width: 100%;
+    max-width: 800px;
+}
+.appointment-section {
+    width: 80%;
+    max-width: 700px;
+    margin: 50px auto 40px;
+    background: #fff;
+    border-radius: 40px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.appointment-title {
+    font-size: 3.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    width: 100%;
+    color: #f88624;
+    text-align: left;
+}
+.appt-desc {
+    font-size: 1.8em;
+    font-weight: 500;
+    margin-top: 0;
+    color: #444;
+}
+.appointment-form-wide,
+.appointment-form-circle {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.appointment-form-wide input,
+.appointment-form-wide select,
+.appointment-form-wide textarea,
+.appointment-form-circle input,
+.appointment-form-circle select,
+.appointment-form-circle textarea {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 20px;
+    background-color: #fff;
+    padding: 15px;
+    font-size: 1.1em;
+    margin: 0;
+}
+.appointment-form-wide textarea,
+.appointment-form-circle textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+.appointment-form-wide input.submit,
+.appointment-form-circle input.submit {
+    background-color: #f88624;
+    color: white;
+    border: solid #f88624;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 10px;
+}
+.appointment-form-wide input.submit:hover,
+.appointment-form-circle input.submit:hover {
+    background-color: #e06d00;
+    border: solid #e06d00;
+}
+
+/* ========================= */
+/* REGISTRATION PAGE         */
+/* ========================= */
+.registration {
+    background-color: white;
+    width: 50%;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px 50px;
+    border: solid black;
+    border-radius: 40px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+.registration .row {
+    display: flex;
+    flex-direction: row;
+    width: 102%;
+}
+.registration h2,
+.registration p {
+    text-align: center;
+}
+.registration input {
+    border: solid black;
+    border-width: 1px;
+    border-radius: 20px;
+    background-color: #fff;
+    padding: 10px;
+    margin: 5px;
+    width: 100%;
+}
+.registration input.submit {
+    border: #f88624;
+    background-color: #f88624;
+    color: white;
+}
+.registration input.submit:hover {
+    background-color: darkslategrey;
+    cursor: pointer;
+}
+.notMatch {
+    border: solid rgba(255, 0, 0, 0.605);
+    background-color: black;
+}
+
+/* ========================= */
+/* LOGIN PAGE                */
+/* ========================= */
+.login-helper-text,
+.login-footer-text {
+    text-align: center;
+    font-size: 14px;
+}
+.login-helper-text {
+    margin-bottom: 10px;
+}
+.login-footer-text {
+    margin-top: 10px;
+}
+.helper-link,
+.switch-to-register {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.helper-link:hover,
+.switch-to-register:hover {
+    text-decoration: underline;
+}
+
+/* ========================= */
+/* BUTTONS / ID SELECTORS    */
+/* ========================= */
+#logout,
+#login,
+#signup {
+    border: solid #f88624;
+    border-radius: 30px;
+    transition: background 0.2s, border 0.2s;
+}
+#logout,
+#login {
+    background-color: #f88624;
+    color: white;
+}
+#logout {
+    border: solid #f88624;
+    border-radius: 30px;
+    background-color: #f88624;
+    color: white;
+    transition: background 0.2s, border 0.2s;
+    font: inherit;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+#signup {
+    background-color: white;
+    color: #f88624;
+}
+#logout:hover {
+    background-color: #e06d00;
+    color: white;
+    border: solid #e06d00;
+}
+
+#login:hover {
+    background-color: #e06d00;
+    color: white;
+    border: solid #e06d00;
+}
+#signup:hover {
+    background-color: #e06d00;
+    color: white;
+    border: solid #e06d00;
+}
+
+/* ========================= */
+/* MISC UTILITY              */
+/* ========================= */
+.create {
+    border: solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+/* ========================= */
+/* Records                   */
+/* ========================= */
+
+.filter-form {
+    margin-bottom: 20px;
+}
+
+input[type="number"] {
+    padding: 8px;
+    font-size: 14px;
+    width: 200px;
+}
+
+button {
+    padding: 8px 12px;
+    background-color: #f88624;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+thead th {
+    text-align: left;
+    padding: 12px;
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+}
+
+tbody td {
+    padding: 12px;
+    border: none;
+}
+
+.details {
+    display: none;
+    padding: 10px;
+    background-color: #fafafa;
+    border-left: 4px solid #f88624;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.toggle-arrow {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.filter-btn {
+    background-color: #f88624;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.filter-btn:hover {
+    background-color: #d56d1e;
+}
+
+.reset-btn {
+    background-color: #f88624;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.filter-btn,
+.reset-btn {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.reset-btn:hover {
+    background-color: #d56d1e;
+}
+
+/* ========================= */
+/* COMMUNITY                 */
+/* ========================= */
+.community-section {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.community-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #f88624;
+  margin-bottom: 10px;
+}
+
+.post-box {
+  border: 2px solid #ccc;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #fff;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.post-box textarea {
+  width: 100%;
+  max-width: 850px;
+  height: 50px;
+  resize: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.post-box,
+.post-box button,
+.comment-form button {
+  text-align: right;
+}
+
+.post-box .upload-row {
+  width: 100%;
+  max-width: 850px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.upload-label {
+  background-color: transparent;    
+  color: #f88624;                    
+  border: 2px solid #f88624;         
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.upload-label:hover {
+  background-color: #f88624;
+  color: white;
+}
+
+.post-box input[type="file"] {
+  display: none;
+}
+
+.upload-row button,
+.comment-form button {
+  background-color: #f88624;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.upload-row button:hover,
+.comment-form button:hover {
+  background-color: #e06d00;
+}
+
+.post {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 30px;
+  margin: 40px 0;
+}
+
+.user-info {
+  font-weight: bold;
+}
+
+.timestamp {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.image-row {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.image-row img {
+  width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.post-stats {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.likes-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.likes-group span
+.file-name-display{
+  font-size: 12px;
+  color: gray;
+}
+
+.heart-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+.heart-btn.liked {
+  color: #e11d48;
+}
+
+.reply {
+  border-left: 2px solid #ccc;
+  padding-left: 15px;
+  margin-top: 15px;
+}
+
+.vet {
+  color: #f88624;
+  font-weight: bold;
+}
+
+.comment-toggle {
+  cursor: pointer;
+  color: #f88624;
+  font-size: 0.9rem;
+}
+
+.comment-form {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comment-form textarea {
+  width: 100%;
+  height: 40px;
+  resize: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 6px;
+  font-size: 0.9rem;
+}
+
+.comment-form .comment-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

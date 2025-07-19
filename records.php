@@ -6,12 +6,32 @@ include_once("includes/db.php");
 include("includes/header.php");
 $mysqli = new mysqli("localhost", "root", "", "happy_paws");
 
-$filter = isset($_GET['pet_id']) ? (int)$_GET['pet_id'] : null;
+$filter = isset($_GET['pet_id']) && $_GET['pet_id'] !== '' ? (int)$_GET['pet_id'] : null;
 
-$query = "SELECT * FROM records";
-if ($filter) {
-    $query .= " WHERE pet_id = $filter";
+$user_id = $_SESSION['user_id']; // assuming this is set at login
+$role = $_SESSION['role'];       // assuming this is set at login
+
+$query = "
+    SELECT 
+        records.*, 
+        pets.name AS pet_name, 
+        CONCAT(users.fname, ' ', users.lname) AS owner_name 
+    FROM records
+    JOIN pets ON records.pet_id = pets.id
+    JOIN users ON records.user_id = users.id
+";
+
+if ($role !== 'admin') {
+    $query .= " WHERE records.user_id = $user_id";
+    if ($filter) {
+        $query .= " AND records.pet_id = $filter";
+    }
+} else {
+    if ($filter) {
+        $query .= " WHERE records.pet_id = $filter";
+    }
 }
+
 $result = $mysqli->query($query);
 ?>
 
@@ -25,7 +45,6 @@ $result = $mysqli->query($query);
     <div class="page-wrapper">
         <main class="container">
             <h2>Pet Medical Records</h2>
-
             <form class="filter-form" method="GET" action="">
                 <div class="filter-buttons">
                     <input type="number" name="pet_id" placeholder="Filter by Pet ID" value="<?= htmlspecialchars($filter) ?>">
@@ -41,6 +60,8 @@ $result = $mysqli->query($query);
                     <thead>
                         <tr>
                             <th>Pet ID</th>
+                            <th>Owner Name</th>
+                            <th>Pet Name</th>
                             <th>Service</th>
                             <th>Veterinarian in Charge</th>
                             <th>Date</th>
@@ -51,6 +72,8 @@ $result = $mysqli->query($query);
                         <?php while ($row = $result->fetch_assoc()): ?>
                             <tr>
                                 <td><?= htmlspecialchars($row['pet_id']) ?></td>
+                                <td><?= htmlspecialchars($row['owner_name']) ?></td>
+                                <td><?= htmlspecialchars($row['pet_name']) ?></td>
                                 <td><?= htmlspecialchars($row['service']) ?></td>
                                 <td><?= htmlspecialchars($row['vet_in_charge']) ?></td>
                                 <td><?= htmlspecialchars($row['visit_date']) ?></td>

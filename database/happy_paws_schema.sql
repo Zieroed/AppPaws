@@ -6,6 +6,7 @@ USE happy_paws;
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     fname VARCHAR(50) NOT NULL,
+    username VARCHAR(50) NOT NULL,
     lname VARCHAR(50) NOT NULL,
     phone VARCHAR(20),
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -13,6 +14,21 @@ CREATE TABLE IF NOT EXISTS users (
     role VARCHAR(20) DEFAULT 'user',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Trigger to set username from fname if not provided
+-- This trigger will set the username to the first name if it is not provided during user creation
+DELIMITER $$
+
+CREATE TRIGGER set_username_from_fname
+BEFORE INSERT ON users
+FOR EACH ROW
+BEGIN
+  IF NEW.username IS NULL OR NEW.username = '' THEN
+    SET NEW.username = NEW.fname;
+  END IF;
+END$$
+
+DELIMITER ;
 
 -- Pets table
 CREATE TABLE IF NOT EXISTS pets (
@@ -41,12 +57,44 @@ CREATE TABLE IF NOT EXISTS appointments (
 -- Records table
 CREATE TABLE IF NOT EXISTS records (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
     pet_id INT NOT NULL,
     service VARCHAR(100) NOT NULL,
     vet_in_charge VARCHAR(100) NOT NULL,
     visit_date DATE NOT NULL,
     detailed_report LONGTEXT,
-    FOREIGN KEY (pet_id) REFERENCES pets(id) ON DELETE CASCADE
+    FOREIGN KEY (pet_id) REFERENCES pets(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Community posts table
+CREATE TABLE posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    content TEXT NOT NULL,
+    image_path VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE likes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    post_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, post_id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
+);
+
+CREATE TABLE comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT NOT NULL,
+    user_id INT NOT NULL,
+    comment TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Insert default admin account if not already present
@@ -131,59 +179,14 @@ INSERT INTO appointments (user_id, pet_name, pet_type, preferred_date, consultat
 (5, 'Max', 'Dog', '2025-07-28', 'Vaccination', 'Parvo booster required.', 'pending');
 
 /* RECORDS */
-INSERT INTO records (pet_id, service, vet_in_charge, visit_date, detailed_report)
-VALUES (
-    1,
-    'Ultrasound',
-    'Dr. Sunshine Magbuhos Arevalo',
-    '2024-03-03',
-    '
-    <strong>Abdominal Ultrasound Report</strong><br><br>
-    <strong>Patient Name:</strong> Whiskers<br>
-    <strong>Species/Breed:</strong> Domestic Shorthair Cat<br>
-    <strong>Age/Sex:</strong> 7-year-old Spayed Female<br>
-    <strong>Referring Veterinarian:</strong> Dr. Sunshine Magbuhos Arevalo<br>
-    <strong>Date of Ultrasound:</strong> March 3, 2024<br><br>
-
-    <strong>Clinical History:</strong><br>
-    Whiskers was referred for abdominal ultrasound due to a 3-day history of vomiting, decreased appetite, and lethargy. Bloodwork showed elevated liver enzymes and an increased white blood cell count.<br><br>
-
-    <strong>Ultrasound Findings:</strong><br>
-    <strong>Liver:</strong> Mildly enlarged with a uniform decrease in echogenicity (appears darker than normal). No masses or bile duct abnormalities noted.<br>
-    <strong>Gallbladder:</strong> Contains mild, non-obstructive sludge. No gallstones or wall thickening observed.<br>
-    <strong>Pancreas:</strong> Appears slightly enlarged and inflamed, with surrounding fat changes—findings consistent with mild to moderate pancreatitis.<br>
-    <strong>Kidneys:</strong> Normal in size and shape. The left kidney shows minor changes in tissue structure, but no signs of kidney stones or fluid buildup.<br>
-    <strong>Intestines:</strong> Mild thickening of the muscular layer in the small intestine, likely due to inflammation. No obstruction or abnormal masses detected.<br>
-    <strong>Bladder:</strong> Normal in appearance with clear urine.<br>
-    <strong>Abdomen:</strong> A small amount of free fluid is present, likely secondary to inflammation in the pancreas.<br><br>
-
-    <strong>Impression:</strong>
-    <ul>
-      <li>Changes consistent with hepatic lipidosis (fatty liver disease)</li>
-      <li>Pancreatitis, mild to moderate</li>
-      <li>Mild, nonspecific intestinal inflammation</li>
-      <li>Small volume abdominal effusion, likely reactive</li>
-    </ul>
-
-    <strong>Recommendations:</strong>
-    <ul>
-      <li>Supportive care including IV fluids, pain management, anti-nausea medication, and nutritional support</li>
-      <li>Monitor liver and pancreatic enzyme levels</li>
-      <li>Consider follow-up ultrasound in 5–7 days if clinical signs persist</li>
-      <li>Fine needle aspiration of the liver may be recommended if no improvement is seen</li>
-    </ul>
-
-    <img src="uploads/ultrasound1.jpg" alt="Ultrasound Image" style="max-width:100%; height:auto;" />
-    '
-);
-
-INSERT INTO records (pet_id, service, vet_in_charge, visit_date, detailed_report) VALUES
-(2, 'Ultrasound', 'Dr. Sunshine Magbuhos Arevalo', '2024-03-03', '<strong>Abdominal Ultrasound Report</strong><br><br><strong>Patient Name:</strong> Ginger<br><strong>Species/Breed:</strong> Domestic Shorthaired Cat<br><strong>Age/Sex:</strong> 3-year-old Female<br><strong>Referring Veterinarian:</strong> Dr. Sunshine Magbuhos Arevalo<br><strong>Date of Ultrasound:</strong> March 3, 2024<br><br><strong>Ultrasound Findings:</strong><br><strong>Liver:</strong> Normal size and echogenicity.<br><strong>Gallbladder:</strong> No abnormalities.<br><strong>Pancreas:</strong> Mild inflammation, suggestive of early pancreatitis.<br><strong>Kidneys:</strong> Symmetrical, normal shape.<br><strong>Intestines:</strong> Mild thickening in jejunum, likely reactive.<br><strong>Bladder:</strong> Normal.<br><strong>Abdomen:</strong> No free fluid noted.<br><br><strong>Impression:</strong><br>• Early pancreatitis<br>• Mild reactive intestinal changes<br><br><strong>Recommendations:</strong><br>• Anti-nausea meds<br>• Low-fat diet<br>• Re-evaluate in 5 days.'),
-(3, 'Vaccination', 'Dr. Elaine Fajardo', '2024-04-15', '<strong>Vaccination Visit Report</strong><br><br><strong>Patient Name:</strong> Max<br><strong>Species/Breed:</strong> Labrador Retriever<br><strong>Age/Sex:</strong> 1-year-old Male<br><br><strong>Service:</strong> Core vaccine boosters administered.<br><br><strong>Vaccines Given:</strong><br>• DHPP<br>• Rabies<br>• Leptospirosis<br><br><strong>Observations:</strong> No adverse reactions noted post-vaccination.<br><br><strong>Recommendations:</strong><br>• Monitor for signs of reaction (swelling, vomiting, etc.)<br>• Next booster due in 1 year.'),
-(4, 'Checkup', 'Dr. Alena Garcia', '2024-05-10', '<strong>Routine Checkup Report</strong><br><br><strong>Patient Name:</strong> Bella<br><strong>Species/Breed:</strong> Pomeranian<br><strong>Age/Sex:</strong> 5-year-old Female<br><br><strong>Findings:</strong><br>• Heart rate: Normal<br>• Lungs: Clear<br>• Weight: Slightly overweight<br><br><strong>Notes:</strong><br>Recommended reduced feeding portions and increased activity.<br><br><strong>Follow-up:</strong> Weight recheck in 4 weeks.'),
-(5, 'Grooming', 'Ms. Jane Cortez', '2024-06-01', '<strong>Grooming Session Report</strong><br><br><strong>Patient Name:</strong> Charlie<br><strong>Species/Breed:</strong> Shih Tzu<br><strong>Age/Sex:</strong> 2-year-old Male<br><br><strong>Service Provided:</strong><br>• Full bath and blow dry<br>• Nail trimming<br>• Ear cleaning<br><br><strong>Notes:</strong><br>Skin in good condition, no fleas or ticks noted.<br><br><strong>Recommendations:</strong><br>• Return in 6 weeks for next grooming.'),
-(6, 'Emergency', 'Dr. Ronel Tan', '2024-06-18', '<strong>Emergency Visit Report</strong><br><br><strong>Patient Name:</strong> Oreo<br><strong>Species/Breed:</strong> Domestic Longhair Cat<br><strong>Age/Sex:</strong> 4-year-old Neutered Male<br><br><strong>Chief Complaint:</strong> Vomiting and lethargy.<br><strong>Findings:</strong> Dehydration, elevated temperature.<br><br><strong>Diagnostics:</strong> CBC, blood chemistry (awaiting results).<br><br><strong>Initial Treatment:</strong><br>• Subcutaneous fluids<br>• Antiemetics<br>• Monitoring overnight<br><br><strong>Next Steps:</strong><br>• Evaluate lab results<br>• Determine need for ultrasound.'),
-(7, 'Checkup', 'Dr. Aria Lim', '2024-03-22', '<strong>Annual Checkup Report</strong><br><br><strong>Patient Name:</strong> Luna<br><strong>Species/Breed:</strong> Beagle<br><strong>Age/Sex:</strong> 6-year-old Female<br><br><strong>Findings:</strong><br>• Slight dental tartar<br>• Joints normal<br><br><strong>Recommendations:</strong><br>• Schedule dental cleaning<br>• Continue current diet.'),
-(8, 'Vaccination', 'Dr. Greg Ramirez', '2024-02-17', '<strong>Vaccination Record</strong><br><br><strong>Patient Name:</strong> Simba<br><strong>Species/Breed:</strong> Golden Retriever<br><strong>Age/Sex:</strong> 8-week-old Male Puppy<br><br><strong>Vaccines Administered:</strong><br>• DHPP<br>• Bordetella (nasal)<br><br><strong>Notes:</strong><br>Puppy in good health. Slight stress post-vaccine, resolved within minutes.'),
-(9, 'Grooming', 'Ms. Jane Cortez', '2024-07-01', '<strong>Grooming Session Summary</strong><br><br><strong>Patient Name:</strong> Coco<br><strong>Species/Breed:</strong> Poodle<br><strong>Age/Sex:</strong> 3-year-old Female<br><br><strong>Grooming:</strong><br>• Summer cut<br>• Ear plucking<br><br><strong>Notes:</strong> Matting on hind limbs trimmed carefully.'),
-(10, 'Ultrasound', 'Dr. Sunshine Magbuhos Arevalo', '2024-07-10', '<strong>Ultrasound Follow-Up Report</strong><br><br><strong>Patient Name:</strong> Tiger<br><strong>Species/Breed:</strong> Siamese Cat<br><strong>Age/Sex:</strong> 9-year-old Neutered Male<br><br><strong>Findings:</strong><br>• Stable hepatic structure<br>• No abnormal fluid<br><strong>Assessment:</strong> Stable compared to previous scan.');
+INSERT INTO records (user_id, pet_id, service, vet_in_charge, visit_date, detailed_report) VALUES
+(1, 1, 'Ultrasound', 'Dr. Sunshine Magbuhos Arevalo', '2024-03-03','<strong>Abdominal Ultrasound Report</strong><br><br><strong>Patient Name:</strong> Whiskers<br><strong>Species/Breed:</strong> Domestic Shorthair Cat<br><strong>Age/Sex:</strong> 7-year-old Spayed Female<br><strong>Referring Veterinarian:</strong> Dr. Sunshine Magbuhos Arevalo<br><strong>Date of Ultrasound:</strong> March 3, 2024<br><br><strong>Clinical History:</strong><br>Whiskers was referred for abdominal ultrasound due to a 3-day history of vomiting, decreased appetite, and lethargy. Bloodwork showed elevated liver enzymes and an increased white blood cell count.<br><br><strong>Ultrasound Findings:</strong><br><strong>Liver:</strong> Mildly enlarged with a uniform decrease in echogenicity (appears darker than normal). No masses or bile duct abnormalities noted.<br><strong>Gallbladder:</strong> Contains mild, non-obstructive sludge. No gallstones or wall thickening observed.<br><strong>Pancreas:</strong> Appears slightly enlarged and inflamed, with surrounding fat changes—findings consistent with mild to moderate pancreatitis.<br><strong>Kidneys:</strong> Normal in size and shape. The left kidney shows minor changes in tissue structure, but no signs of kidney stones or fluid buildup.<br><strong>Intestines:</strong> Mild thickening of the muscular layer in the small intestine, likely due to inflammation. No obstruction or abnormal masses detected.<br><strong>Bladder:</strong> Normal in appearance with clear urine.<br><strong>Abdomen:</strong> A small amount of free fluid is present, likely secondary to inflammation in the pancreas.<br><br><strong>Impression:</strong><ul><li>Changes consistent with hepatic lipidosis (fatty liver disease)</li><li>Pancreatitis, mild to moderate</li><li>Mild, nonspecific intestinal inflammation</li><li>Small volume abdominal effusion, likely reactive</li></ul><strong>Recommendations:</strong><ul><li>Supportive care including IV fluids, pain management, anti-nausea medication, and nutritional support</li><li>Monitor liver and pancreatic enzyme levels</li><li>Consider follow-up ultrasound in 5-7 days if clinical signs persist</li><li>Fine needle aspiration of the liver may be recommended if no improvement is seen</li></ul><img src="/AppPaws/assets/ultrasound1.jpg" alt="Ultrasound Image" style="max-width:100%; height:auto;" />');
+(2, 2, 'Ultrasound', 'Dr. Sunshine Magbuhos Arevalo', '2024-03-03', '<strong>Abdominal Ultrasound Report</strong><br><br><strong>Patient Name:</strong> Ginger<br><strong>Species/Breed:</strong> Domestic Shorthaired Cat<br><strong>Age/Sex:</strong> 3-year-old Female<br><strong>Referring Veterinarian:</strong> Dr. Sunshine Magbuhos Arevalo<br><strong>Date of Ultrasound:</strong> March 3, 2024<br><br><strong>Ultrasound Findings:</strong><br><strong>Liver:</strong> Normal size and echogenicity.<br><strong>Gallbladder:</strong> No abnormalities.<br><strong>Pancreas:</strong> Mild inflammation, suggestive of early pancreatitis.<br><strong>Kidneys:</strong> Symmetrical, normal shape.<br><strong>Intestines:</strong> Mild thickening in jejunum, likely reactive.<br><strong>Bladder:</strong> Normal.<br><strong>Abdomen:</strong> No free fluid noted.<br><br><strong>Impression:</strong><br>• Early pancreatitis<br>• Mild reactive intestinal changes<br><br><strong>Recommendations:</strong><br>• Anti-nausea meds<br>• Low-fat diet<br>• Re-evaluate in 5 days.'),
+(2, 3, 'Vaccination', 'Dr. Elaine Fajardo', '2024-04-15', '<strong>Vaccination Visit Report</strong><br><br><strong>Patient Name:</strong> Max<br><strong>Species/Breed:</strong> Labrador Retriever<br><strong>Age/Sex:</strong> 1-year-old Male<br><br><strong>Service:</strong> Core vaccine boosters administered.<br><br><strong>Vaccines Given:</strong><br>• DHPP<br>• Rabies<br>• Leptospirosis<br><br><strong>Observations:</strong> No adverse reactions noted post-vaccination.<br><br><strong>Recommendations:</strong><br>• Monitor for signs of reaction (swelling, vomiting, etc.)<br>• Next booster due in 1 year.'),
+(3, 4, 'Checkup', 'Dr. Alena Garcia', '2024-05-10', '<strong>Routine Checkup Report</strong><br><br><strong>Patient Name:</strong> Bella<br><strong>Species/Breed:</strong> Pomeranian<br><strong>Age/Sex:</strong> 5-year-old Female<br><br><strong>Findings:</strong><br>• Heart rate: Normal<br>• Lungs: Clear<br>• Weight: Slightly overweight<br><br><strong>Notes:</strong><br>Recommended reduced feeding portions and increased activity.<br><br><strong>Follow-up:</strong> Weight recheck in 4 weeks.'),
+(4, 5, 'Grooming', 'Ms. Jane Cortez', '2024-06-01', '<strong>Grooming Session Report</strong><br><br><strong>Patient Name:</strong> Charlie<br><strong>Species/Breed:</strong> Shih Tzu<br><strong>Age/Sex:</strong> 2-year-old Male<br><br><strong>Service Provided:</strong><br>• Full bath and blow dry<br>• Nail trimming<br>• Ear cleaning<br><br><strong>Notes:</strong><br>Skin in good condition, no fleas or ticks noted.<br><br><strong>Recommendations:</strong><br>• Return in 6 weeks for next grooming.'),
+(5, 6, 'Emergency', 'Dr. Ronel Tan', '2024-06-18', '<strong>Emergency Visit Report</strong><br><br><strong>Patient Name:</strong> Oreo<br><strong>Species/Breed:</strong> Domestic Longhair Cat<br><strong>Age/Sex:</strong> 4-year-old Neutered Male<br><br><strong>Chief Complaint:</strong> Vomiting and lethargy.<br><strong>Findings:</strong> Dehydration, elevated temperature.<br><br><strong>Diagnostics:</strong> CBC, blood chemistry (awaiting results).<br><br><strong>Initial Treatment:</strong><br>• Subcutaneous fluids<br>• Antiemetics<br>• Monitoring overnight<br><br><strong>Next Steps:</strong><br>• Evaluate lab results<br>• Determine need for ultrasound.'),
+(6, 7, 'Checkup', 'Dr. Aria Lim', '2024-03-22', '<strong>Annual Checkup Report</strong><br><br><strong>Patient Name:</strong> Luna<br><strong>Species/Breed:</strong> Beagle<br><strong>Age/Sex:</strong> 6-year-old Female<br><br><strong>Findings:</strong><br>• Slight dental tartar<br>• Joints normal<br><br><strong>Recommendations:</strong><br>• Schedule dental cleaning<br>• Continue current diet.'),
+(8, 8, 'Vaccination', 'Dr. Greg Ramirez', '2024-02-17', '<strong>Vaccination Record</strong><br><br><strong>Patient Name:</strong> Simba<br><strong>Species/Breed:</strong> Golden Retriever<br><strong>Age/Sex:</strong> 8-week-old Male Puppy<br><br><strong>Vaccines Administered:</strong><br>• DHPP<br>• Bordetella (nasal)<br><br><strong>Notes:</strong><br>Puppy in good health. Slight stress post-vaccine, resolved within minutes.'),
+(7, 9, 'Grooming', 'Ms. Jane Cortez', '2024-07-01', '<strong>Grooming Session Summary</strong><br><br><strong>Patient Name:</strong> Coco<br><strong>Species/Breed:</strong> Poodle<br><strong>Age/Sex:</strong> 3-year-old Female<br><br><strong>Grooming:</strong><br>• Summer cut<br>• Ear plucking<br><br><strong>Notes:</strong> Matting on hind limbs trimmed carefully.'),
+(9, 10, 'Ultrasound', 'Dr. Sunshine Magbuhos Arevalo', '2024-07-10', '<strong>Ultrasound Follow-Up Report</strong><br><br><strong>Patient Name:</strong> Tiger<br><strong>Species/Breed:</strong> Siamese Cat<br><strong>Age/Sex:</strong> 9-year-old Neutered Male<br><br><strong>Findings:</strong><br>• Stable hepatic structure<br>• No abnormal fluid<br><strong>Assessment:</strong> Stable compared to previous scan.');
