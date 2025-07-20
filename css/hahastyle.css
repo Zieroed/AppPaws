@@ -2,23 +2,17 @@
 /* GLOBAL STYLES            */
 /* ========================= */
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  scroll-behavior: smooth;
-  font-family: 'Segoe UI', sans-serif;
+    box-sizing: border-box;
 }
-
 body {
-  background-color: #fff;
-  color: #333;
+    margin: 0;
+    font-family: sans-serif;
 }
-
 .hidden {
     display: none;
 }
 .blur {
-    filter: blur(3px);
+    filter: blur(1.5px);
 }
 .container {
     width: 92%;
@@ -74,7 +68,6 @@ header a.user {
 .header-right {
     float: right;
 }
-
 header a.title:hover img,
 header a.title img:hover {
     background: none;
@@ -91,244 +84,6 @@ header a.title:hover {
     color: inherit !important;
 }
 
-#user:hover{
-    cursor: default;
-}
-
-/* ========================= */
-/* HOMEPAGE STYLES          */
-/* ========================= */
-
-.hero {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 3rem 5rem;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/AppPaws/assets/animalBackgroundHomePage.jpg');
-  background-size: cover;
-  background-position: center;
-  color: white;
-}
-
-.welcome-title {
-  font-size: 2.5rem;
-  margin-bottom: 0;
-}
-.happypaws-title {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-.happypaws-title span {
-  color: #f97316;
-}
-
-.hero-text p {
-  margin: 0.5rem 0;
-}
-.hero-text button {
-  margin-top: 1rem;
-  padding: 0.7rem 1.5rem;
-  border: 2px solid #f97316;
-  background-color: transparent;
-  color: #f97316;
-  font-weight: bold;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.hero-text button:hover{
-  background-color: #f97316;
-  color: white;
-}
-
-.hero-image img {
-  width: 400px;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  margin-left: 20px;
-}
-
-.branding {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.business-name {
-  height: 40px;
-  width: auto;
-}
-
-/* Section Styles */
-.clinic-section,
-.about-section,
-.services-section {
-  margin: 0 auto;
-  padding: 60px 20px;
-  background-color: #fff;
-  text-align: center;
-}
-
-.clinic-section h1,
-.about-section h1 {
-  color: #f97316;
-  margin-bottom: 20px;
-}
-
-.services-section h1 {
-  color: white;
-  margin-bottom: 20px;
-}
-
-.clinic-section p,
-.about-section .description p,
-.services-section p {
-  max-width: 800px;
-  margin: 0 auto 20px auto;
-  line-height: 1.6;
-}
-
-.map-image {
-  width: 100%;
-  max-width: 800px;
-  border-radius: 10px;
-  margin-top: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.address {
-  font-style: italic;
-  font-weight: bold;
-  margin-top: 15px;
-}
-
-/* Services Section */
-.services-container,
-.services-section{
-  background-color: #f97316;
-  background-size: cover;
-  background-position: center;
-  width: 100%;
-}
-.services-section {
-  color: white;
-  padding: 60px 20px;
-  text-align: center;
-}
-
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  width: 100%;
-  max-width: 1050px;
-  margin: 0 auto;
-}
-
-.service-card {
-  border: 2px solid white;
-  border-radius: 12px;
-  padding: 16px;
-  text-align: left;
-  display: flex;
-  gap: 15px;
-  align-items: stretch;
-  background: transparent;
-  width: 100%;
-}
-
-.service-card img {
-  width: 120px;
-  height: 120px;
-  border-radius: 6px;
-  object-fit: cover;
-}
-
-.others-card-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-}
-
-.others-card {
-  max-width: 600px;
-  width: 100%;
-}
-
-.vet-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 40px;
-  margin: 40px 0;
-}
-
-.vet-bio {
-  max-width: 300px;
-  text-align: left;
-}
-
-.vet-bio h3 {
-  color: #f97316;
-  font-style: italic;
-}
-
-.vet-image img {
-  width: 250px;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.images-container {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
-}
-
-.images-container img {
-  width: 250px;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.site-footer {
-  background-color: #f97316;
-  padding: 15px;
-  text-align: center;
-  color: white;
-  font-size: 0.9rem;
-}
-
-@media (max-width: 768px) {
-  .hero {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .hero-text,
-  .hero-image {
-    max-width: 100%;
-  }
-
-  .hero-image img {
-    width: 80%;
-    margin-top: 2rem;
-    margin-left: 0;
-  }
-
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .others-card {
-    max-width: 90%;
-  }
-}
 
 /* ========================= */
 /* FOOTER                    */
@@ -734,14 +489,4 @@ tbody td {
   border: solid 4px #e06d00;
   color: white;
   cursor: pointer;
-}
-
-.error {
-    color: red;
-    background-color: #fdd;
-    padding: 10px;
-    border: 1px solid #f99;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: solid 1px black;
 }

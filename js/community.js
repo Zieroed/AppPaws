@@ -86,40 +86,50 @@ function addPost() {
 
 function submitComment(event, form) {
     event.preventDefault();
-    console.log("Submit triggered"); // Add this
-    const text = form.querySelector("textarea").value.trim();
-    if (text === "") return;
+
+    const textarea = form.querySelector("textarea");
+    const comment = textarea.value.trim();
+    if (comment === "") return;
 
     const postElement = form.closest(".post");
-    const postId = postElement.dataset.postId;
+    const postId = postElement.getAttribute("data-post-id");
 
-    fetch("/AppPaws/comment_post.php", {
+    const formData = new FormData();
+    formData.append("comment", comment);
+    formData.append("post_id", postId);
+
+    fetch("/AppPaws/save_comment.php", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: "post_id=" + encodeURIComponent(postId) + "&content=" + encodeURIComponent(text)
+        body: formData
     })
-    .then(res => res.json())
+    .then(response => {
+        if (!response.ok) throw new Error("Network error");
+        return response.json();
+    })
     .then(data => {
-        if (data.success) {
-            const newComment = document.createElement("div");
-            newComment.className = "reply";
-            newComment.innerHTML = `
-                <div class="user-info">${data.username} <span class="timestamp">· just now</span></div>
-                <p>${data.content}</p>
-                <div class="likes-group">
-                    <button class="heart-btn" onclick="toggleLike(this)">♥</button>
-                    <span><span class="like-count">0</span> Likes</span>
-                </div>
-            `;
-            form.parentElement.insertBefore(newComment, form);
-            form.querySelector("textarea").value = "";
+        if (!data.success) throw new Error(data.message || "Failed to save comment");
 
-            // Update comment count
-            const toggle = postElement.querySelector(".comment-toggle");
-            let count = parseInt(toggle.textContent) || 0;
-            count++;
-            toggle.textContent = `${count} Comment${count !== 1 ? "s" : ""}`;
+        const newComment = document.createElement("div");
+        newComment.className = "comment";
+        newComment.innerHTML = `<strong>${data.username}</strong>: ${data.comment} <span class='timestamp'>· ${data.created_at}</span>`;
+
+        // Insert new comment before the form
+        form.parentNode.insertBefore(newComment, form);
+
+        // Clear textarea
+        textarea.value = "";
+
+        // Update comment count
+        const commentToggle = postElement.querySelector(".comment-toggle");
+        let match = commentToggle.textContent.match(/\d+/);
+        if (match) {
+            const count = parseInt(match[0]) + 1;
+            commentToggle.textContent = `${count} Comments`;
         }
+    })
+    .catch(err => {
+        alert("Failed to post comment: " + err.message);
+        console.error("Comment error:", err);
     });
 }
 
@@ -130,11 +140,5 @@ document.addEventListener("DOMContentLoaded", function () {
     fileInput.addEventListener("change", function () {
         const file = fileInput.files[0];
         fileNameDisplay.textContent = file ? `Selected file: ${file.name}` : "";
-    });
-
-    document.querySelectorAll('.comment-form').forEach(form => {
-        form.addEventListener('submit', function (e) {
-            submitComment(e, form);
-        });
-    });
+    }); 
 });

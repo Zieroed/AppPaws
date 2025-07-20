@@ -470,3 +470,13 @@ tbody td {
         padding: 20px 5px;
     }
 }
+
+.error {
+    color: red;
+    background-color: #fdd;
+    padding: 10px;
+    border: 1px solid #f99;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: solid 1px black;
+}

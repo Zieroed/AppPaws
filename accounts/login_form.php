@@ -1,5 +1,5 @@
 <!-- Login Popup -->
-<div class="hidden" id="login-popup">
+<div class="<?= isset($error) ? '' : 'hidden' ?>" id="login-popup">
     <div class="registration" >
         <span class="close" onclick="closeLogin()">&times;</span>
         <h2 style="color: #f88624;">Hop In</h2>
@@ -12,6 +12,9 @@
             <div>
                 <input type="password" name="password" placeholder="Password" required>
             </div>
+            <?php if (isset($error)): ?>
+                <div class="helper-link"><?= htmlspecialchars($error) ?></div>
+            <?php endif; ?>
             <div class="login-helper-text">
                 <a class="helper-link" href="#">Having trouble signing in?</a>
             </div>

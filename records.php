@@ -7,9 +7,8 @@ include("includes/header.php");
 $mysqli = new mysqli("localhost", "root", "", "happy_paws");
 
 $filter = isset($_GET['pet_id']) && $_GET['pet_id'] !== '' ? (int)$_GET['pet_id'] : null;
-
-$user_id = $_SESSION['user_id']; // assuming this is set at login
-$role = $_SESSION['role'];       // assuming this is set at login
+$user_id = $_SESSION['user_id'];
+$role = $_SESSION['role']; 
 
 $query = "
     SELECT 
@@ -32,6 +31,7 @@ if ($role !== 'admin') {
     }
 }
 
+
 $result = $mysqli->query($query);
 ?>
 
@@ -39,23 +39,26 @@ $result = $mysqli->query($query);
 <html>
 <head>
     <title>Pet Records</title>
-    <link id="stylesheet" rel="stylesheet" href="css/style.css">
+    <link id="stylesheet" rel="stylesheet" href="css/hahastyle.css">
 </head>
 <body>
     <div class="page-wrapper">
         <main class="container">
             <h2>Pet Medical Records</h2>
-            <form class="filter-form" method="GET" action="">
-                <div class="filter-buttons">
-                    <input type="number" name="pet_id" placeholder="Filter by Pet ID" value="<?= htmlspecialchars($filter) ?>">
-                    <button type="submit" class="filter-btn">Filter</button>
-                    <?php if ($filter): ?>
-                        <a href="records.php" class="filter-btn reset-btn">Reset</a>
-                    <?php endif; ?>
-                </div>
-            </form>
+            <?php $missing = $result && $result->num_rows > 0; ?>
+            <?php if ($missing): ?>
+                <form class="filter-form" method="GET" action="">
+                    <div class="filter-buttons">
+                        <input type="number" name="pet_id" placeholder="Filter by Pet ID" value="<?= htmlspecialchars($filter) ?>">
+                        <button type="submit" class="filter-btn">Filter</button>
+                        <?php if ($filter): ?>
+                            <a href="records.php" class="filter-btn reset-btn">Reset</a>
+                        <?php endif; ?>
+                    </div>
+                </form>
+            <?php endif; ?>
 
-            <?php if ($result && $result->num_rows > 0): ?>
+            <?php if ($missing): ?>
                 <table>
                     <thead>
                         <tr>
@@ -80,7 +83,7 @@ $result = $mysqli->query($query);
                                 <td class="toggle-arrow" onclick="toggleDetails(this)">&#x25BC;</td>
                             </tr>
                             <tr class="details-row">
-                                <td colspan="5">
+                                <td colspan="7">
                                     <div class="details"><?= html_entity_decode($row['detailed_report']) ?></div>
                                 </td>
                             </tr>
@@ -88,7 +91,11 @@ $result = $mysqli->query($query);
                     </tbody>
                 </table>
             <?php else: ?>
-                <p>No records found.</p>
+                <div class="hero-text">
+                    <p>You don't have a record yet.</p>
+                    <a href="/AppPaws/appointment.php" class="<?php echo ($current == 'appointment.php') ? 'active' : ''; ?>">Book an Appointment</a>
+                </div>
+                
             <?php endif; ?>
         </main>
     </div>

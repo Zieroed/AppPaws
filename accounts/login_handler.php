@@ -40,10 +40,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             exit();
         } else {
-            echo "<p>Incorrect password.</p>";
+            $error = "Invalid email or password.";
         }
     } else {
-        echo "<p>No account found with that email.</p>";
+        $error = "Invalid email or password.";
     }
 }
 ?>
