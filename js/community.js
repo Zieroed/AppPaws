@@ -2,7 +2,7 @@ function toggleLike(button) {
     const postElement = button.closest(".post");
     const postId = postElement.dataset.postId;
 
-    fetch("like_post.php", {
+    fetch("/AppPaws/like_post.php", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: "post_id=" + encodeURIComponent(postId)
@@ -37,7 +37,7 @@ function addPost() {
         formData.append("image", file);
     }
 
-    fetch("save_post.php", {
+    fetch("/AppPaws/save_post.php", {
         method: "POST",
         body: formData
     })
@@ -93,7 +93,7 @@ function submitComment(event, form) {
     const postElement = form.closest(".post");
     const postId = postElement.dataset.postId;
 
-    fetch("comment_post.php", {
+    fetch("/AppPaws/comment_post.php", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: "post_id=" + encodeURIComponent(postId) + "&content=" + encodeURIComponent(text)

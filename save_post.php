@@ -50,6 +50,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt->close();
 }
-
 echo json_encode($response);
 ?>
