@@ -4,7 +4,7 @@
             <div style="flex: 1; display: flex; align-items: center; gap: 20px;">
                 <a class="title" href="/AppPaws/index.php" style="display: flex; align-items: center; gap: 10px;">
                     <img src="/AppPaws/assets/logo.png" alt="Logo" style="height:60px; width:auto; display:block;">
-                    <img src="/AppPaws/assets/title.jpg" alt="Title" style="height:60px; width:auto; display:block;">
+                    <img src="/AppPaws/assets/title.jpg" alt="Title" style="height:50px; width:auto; display:block;">
                 </a>
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                     <a href="/AppPaws/admin/dashboard.php" class="<?php echo ($current == 'dashboard.php') ? 'active' : ''; ?>">Dashboard</a>
@@ -38,7 +38,7 @@
                 <a href="/AppPaws/index.php#about" class="<?php echo ($current == 'about.php') ? 'active' : ''; ?>">About</a>
                 <?php if (isset($_SESSION["fname"])): ?>
                     <a id="user">User: <?php echo $_SESSION["username"]; ?></a>
-
+                    
                     <!-- Logout Form as button styled like a link -->
                     <form id="myform" action="/AppPaws/accounts/logout.php" method="post" style="margin:0; padding:0; border:none; background:none; display:inline;">
                         <button id="logout" type="submit">Log out</button>

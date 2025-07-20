@@ -8,12 +8,10 @@
   scroll-behavior: smooth;
   font-family: 'Segoe UI', sans-serif;
 }
-
 body {
   background-color: #fff;
   color: #333;
 }
-
 .hidden {
     display: none;
 }
@@ -91,9 +89,26 @@ header a.title:hover {
     color: inherit !important;
 }
 
-#user:hover{
+#user { /* Ensure #user matches other nav styles but is not interactive */
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 25px;
+    border-radius: 4px;
+    min-width: 80px;
+    padding: 10px;
+    font-weight: normal;
+    background: none;
+    pointer-events: none;
+}
+
+#user:hover { /* Prevent hover effect on user */
+    background: none;
+    color: black;
     cursor: default;
 }
+
 
 /* ========================= */
 /* HOMEPAGE STYLES          */
@@ -124,21 +139,6 @@ header a.title:hover {
 
 .hero-text p {
   margin: 0.5rem 0;
-}
-.hero-text button {
-  margin-top: 1rem;
-  padding: 0.7rem 1.5rem;
-  border: 2px solid #f97316;
-  background-color: transparent;
-  color: #f97316;
-  font-weight: bold;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.hero-text button:hover{
-  background-color: #f97316;
-  color: white;
 }
 
 .hero-image img {
@@ -461,9 +461,10 @@ html, body {
     width: 50%;
     max-width: 600px;
     margin: auto;
-    padding: 20px 50px;
-    border: solid black;
+    padding: 40px 50px;
+    border: solid black 1px;
     border-radius: 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     position: fixed;
     top: 50%;
     left: 50%;
@@ -474,24 +475,35 @@ html, body {
     display: flex;
     flex-direction: row;
     width: 102%;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 .registration h2,
 .registration p {
     text-align: center;
+    margin-bottom: 15px;
+    color: #333;
 }
 .registration input {
-    border: solid black;
-    border-width: 1px;
+    border: 1px solid black;
     border-radius: 20px;
     background-color: #fff;
-    padding: 10px;
-    margin: 5px;
+    padding: 12px 18px;
+    margin: 5px 0;
     width: 100%;
+    font-size: 14px;
+    transition: border 0.3s;
 }
 .registration input.submit {
-    border: #f88624;
+    border: none;
     background-color: #f88624;
     color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 30px;
+    margin-top: 15px;
+    padding: 12px 0;
+    transition: background-color 0.3s;
 }
 .registration input.submit:hover {
     background-color: darkslategrey;
@@ -509,18 +521,24 @@ html, body {
 .login-footer-text {
     text-align: center;
     font-size: 14px;
+    margin: 10px 0;
+    color: #333;
 }
+
 .login-helper-text {
     margin-bottom: 10px;
 }
+
 .login-footer-text {
     margin-top: 10px;
 }
+
 .helper-link,
 .switch-to-register {
-    color: black;
+    color: #e06d00;
     text-decoration: none;
     cursor: pointer;
+    font-weight: 500;
 }
 .helper-link:hover,
 .switch-to-register:hover {
@@ -533,41 +551,19 @@ html, body {
 #logout,
 #login,
 #signup {
-    border: solid #f88624;
-    border-radius: 30px;
-    transition: background 0.2s, border 0.2s;
-}
-#logout,
-#login {
-    background-color: #f88624;
-    color: white;
-}
-#logout {
-    border: solid #f88624;
-    border-radius: 30px;
-    background-color: #f88624;
-    color: white;
-    transition: background 0.2s, border 0.2s;
-    font: inherit;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-left: 10px;
-}
-#signup {
-    background-color: white;
+    font-size: 18px;
     color: #f88624;
-}
-#logout:hover {
-    background-color: #e06d00;
-    color: white;
-    border: solid #e06d00;
+    border: solid #f88624;
+    border-radius: 30px;
+    padding: 6px 14px;
+    margin-left: 5px;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background 0.2s, border 0.2s;
 }
 
-#login:hover {
-    background-color: #e06d00;
-    color: white;
-    border: solid #e06d00;
-}
+#logout:hover,
+#login:hover,
 #signup:hover {
     background-color: #e06d00;
     color: white;
@@ -592,7 +588,7 @@ html, body {
 }
 
 /* ========================= */
-/* Records        */
+/* Records                   */
 /* ========================= */
 
 .filter-form {
@@ -717,21 +713,23 @@ tbody td {
 }
 
 .hero-text a {
-  border: solid #f88624;
-  background-color: #f88624;
   float: left;
   color: white;
   text-align: center;
   text-decoration: none;
-  font-size: 18px;
-  line-height: 25px;
-  border-radius: 4px;
-  min-width: 80px;
-  padding: 10px;
+  font-size: 15px;
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  border: 2px solid #f97316;
+  background-color: transparent;
+  color: #f97316;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 .hero-text a:hover {
-  background-color: #e06d00;
-  border: solid 4px #e06d00;
+  background-color: #f97316;
   color: white;
   cursor: pointer;
 }

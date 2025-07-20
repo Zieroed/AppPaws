@@ -28,7 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <!-- Title Page Section --> 
             <section id="home" class="hero">
             <div class="hero-text">
-                <h1>Welcome to <span>Happy Paws Animal Care!</span></h1>
+                <h1 class="welcome-title">Welcome to</h1>
+                <h1 class="happypaws-title"><span>Happy Paws Animal Care!</span></h1>
                 <p><strong>Inquiries:</strong> 0917 548 8176</p>
                 <p><strong>Clinic Hours:</strong> 8:00am to 5:00pm, Monday to Saturday</p>
                 <p><strong>Socials:</strong> Happy Paws Animal Care Facebook Page</p>

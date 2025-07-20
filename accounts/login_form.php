@@ -12,19 +12,23 @@
             <div>
                 <input type="password" name="password" placeholder="Password" required>
             </div>
+
             <?php if (isset($error)): ?>
                 <div class="helper-link"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
+
             <div class="login-helper-text">
                 <a class="helper-link" href="#">Having trouble signing in?</a>
             </div>
             <div>
                 <input class="submit" type="submit" name="login" value="Log In">
             </div>
+            
             <div class="login-footer-text">
                 Don't have an account? 
                 <a class="switch-to-register" onclick="switchToRegister()">We pawmise it'll be a fetching experience.</a>
             </div>
         </form>
+
     </div>
 </div>

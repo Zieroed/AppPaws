@@ -26,5 +26,10 @@
                 <input class="submit" type="submit" name="register" value="Create">
             </div>
         </form>
+
+        <div class="form-footer-text">
+            Ready to get back to business? 
+            <a class="switch-to-register" onclick="switchToRegister()">We’ve fur real missed you!</a>
+        </div>
     </div>
 </div>
