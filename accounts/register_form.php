@@ -11,10 +11,13 @@
                 <input type="text" id="lname" name="lname" placeholder="Last Name" required>
             </div>
             <div>
-                <input type="text" id="phone" name="phone" placeholder="Phone number" required>
+                <input type="text" id="phone" name="phone" placeholder="Phone number" required
+                pattern="^(\+63|0)?9\d{9}$" title="Enter a valid PH mobile number (e.g., 09123456789)">
             </div>
             <div>
-                <input type="text" id="email" name="email" placeholder="Email" required>
+                <input type="text" id="email" name="email" placeholder="Email" required
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                title="Enter a valid email address (e.g., name@example.com)">
             </div>
             <div>
                 <input type="password" id="pass" name="pass" placeholder="Password" minlength="8" required>
@@ -22,6 +25,9 @@
             <div>
                 <input type="password" id="confirm_pass" name="confirm_pass" placeholder="Confirm Password" minlength="8" required><br>
             </div>
+            <?php if (isset($reg_error)): ?>
+                <div class="helper-link"><?= htmlspecialchars($reg_error) ?></div>
+            <?php endif; ?>
             <div>
                 <input class="submit" type="submit" name="register" value="Create">
             </div>
@@ -29,7 +35,21 @@
 
         <div class="form-footer-text">
             Ready to get back to business? 
-            <a class="switch-to-register" onclick="switchToRegister()">We’ve fur real missed you!</a>
+            <a class="switch-to-register" onclick="switchToLogin()">We've fur real missed you!</a>
         </div>
     </div>
 </div>
+<?php if (isset($reg_error)): ?>
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+        // Show registration form
+        document.getElementById("register").classList.remove("hidden");
+
+        // Hide login form
+        const loginForm = document.getElementById("login-popup");
+        if (loginForm) {
+            loginForm.classList.add("hidden");
+        }
+    });
+</script>
+<?php endif; ?>

@@ -32,3 +32,7 @@ function switchToRegister() {
     closeLogin();
     showRegister();
 }
+function switchToLogin() {
+    closeRegister();
+    showLogin();
+}

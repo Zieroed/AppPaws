@@ -44,11 +44,23 @@ $user_id = $_SESSION['user_id'] ?? 0;
         ORDER BY p.created_at DESC;";   
       $result = mysqli_query($conn, $query);
 
+      function timeAgo($datetime) {
+        $time = strtotime($datetime);
+        $diff = time() - $time;
+
+        if ($diff < 60) return 'Just now';
+        if ($diff < 3600) return floor($diff / 60) . ' min' . (floor($diff / 60) > 1 ? 's' : '') . ' ago';
+        if ($diff < 86400) return floor($diff / 3600) . ' hour' . (floor($diff / 3600) > 1 ? 's' : '') . ' ago';
+        if ($diff < 604800) return floor($diff / 86400) . ' day' . (floor($diff / 86400) > 1 ? 's' : '') . ' ago';
+
+        return date("M d", $time);
+      }
+      
       while ($row = mysqli_fetch_assoc($result)) {
           $name = htmlspecialchars($row['name']);
           $username = htmlspecialchars($row['username'] ?? 'unknown');
           $content = nl2br(htmlspecialchars($row['content']));
-          $created = date("M d", strtotime($row['created_at']));
+          $created = timeAgo($row['created_at']);
           $image = $row['image_path'] ? "<div class='image-row'><img src='{$row['image_path']}' alt='User image'></div>" : "";
             $post_id = $row['id'];
             $comments = [];
@@ -68,7 +80,7 @@ $user_id = $_SESSION['user_id'] ?? 0;
             foreach ($comments as $comment) {
                 $c_user = htmlspecialchars($comment['username']);
                 $c_text = nl2br(htmlspecialchars($comment['comment']));
-                $c_time = date("M d", strtotime($comment['created_at']));
+                $c_time = timeAgo($comment['created_at']);
                 $comment_html .= "<div class='comment'><strong>{$c_user}</strong>: {$c_text} <span class='timestamp'>· {$c_time}</span></div>";
             }
             $likedClass = $row['user_liked'] ? 'liked' : '';

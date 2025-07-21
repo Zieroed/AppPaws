@@ -33,16 +33,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     mysqli_stmt_close($pet_check_stmt);
 
     // Insert into appointments
-    $sql = "INSERT INTO appointments (user_id, pet_name, pet_type, preferred_date, consultation_type, message, status)
-            VALUES (?, ?, ?, ?, ?, ?, 'Pending')";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "isssss", $user_id, $pet_name, $pet_type, $preferred_date, $consultation_type, $message);
-
-    if (mysqli_stmt_execute($stmt)) {
-        $success = "Appointment scheduled successfully!";
+    $today = date("Y-m-d");
+    if ($preferred_date < $today) {
+        $error = "You cannot book for a past date.";
     } else {
-        $error = "Failed to schedule appointment.";
+        $check_sql = "SELECT COUNT(*) as count FROM appointments WHERE preferred_date = ?";
+        $check_stmt = mysqli_prepare($conn, $check_sql);
+        mysqli_stmt_bind_param($check_stmt, "s", $preferred_date);
+        mysqli_stmt_execute($check_stmt);
+        mysqli_stmt_bind_result($check_stmt, $count);
+        mysqli_stmt_fetch($check_stmt);
+        mysqli_stmt_close($check_stmt);
+
+        if ($count >= 5) {
+            $error = "This date is fully booked. Please choose another.";
+        } else {
+            // Insert into appointments
+            $sql = "INSERT INTO appointments (user_id, pet_name, pet_type, preferred_date, consultation_type, message, status)
+                    VALUES (?, ?, ?, ?, ?, ?, 'Pending')";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "isssss", $user_id, $pet_name, $pet_type, $preferred_date, $consultation_type, $message);
+
+            if (mysqli_stmt_execute($stmt)) {
+                $success = "Appointment scheduled successfully!";
+            } else {
+                $error = "Failed to schedule appointment.";
+            }
+        }
     }
+}
+
+// Fetch booked dates with more than 3 appointments
+$booked_dates = [];
+$sql = "SELECT preferred_date, COUNT(*) as total FROM appointments GROUP BY preferred_date HAVING total >= 3";
+$result = mysqli_query($conn, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+    $booked_dates[] = $row["preferred_date"];
 }
 ?>
 
@@ -98,5 +124,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
     <?php include("includes/footer.php"); ?>
 </div>
+<script>
+    const disabledDates = <?php echo json_encode($booked_dates); ?>;
+    document.addEventListener("DOMContentLoaded", function () {
+        const dateInput = document.querySelector('input[name="preferred_date"]');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+
+        dateInput.addEventListener("input", function () {
+            if (disabledDates.includes(this.value)) {
+                alert("This date is already fully booked. Please select another date.");
+                this.value = "";
+            }
+        });
+    });
+</script>
 </body>
 </html>
