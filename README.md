@@ -1,64 +1,125 @@
-# AppPaws - Veterinary Clinic Management System
+# AppPaws: Veterinary Clinic Management and Community Platform
 
-AppPaws is an academic full-stack veterinary clinic management prototype built with PHP, MySQL, JavaScript, HTML, and CSS. It was created for academic demonstration and is being preserved as evidence of development work for internship applications.
+## Project Goal
 
-## Scope and status
+How can a single web-based platform support veterinary clinic appointment scheduling, pet medical records, and client community interactions?
 
-- The application uses synthetic database records only.
-- The veterinary clinic did not officially adopt or integrate the system.
-- The project was temporarily hosted for academic demonstration, not production use.
-- Public hosting, comprehensive security repairs, refactoring, and automated testing are explicitly postponed.
-- The repository should not be represented as production-ready or as an officially deployed clinic system.
+AppPaws is an academic full-stack web application prototype developed around the operational needs of Happy Paws Animal Care, a veterinary clinic in Meycauayan, Bulacan.
 
-## Architecture verified from the repository
+The system was developed for academic demonstration using synthetic data. It was not officially adopted or integrated into the clinic's operations.
 
-- PHP page and handler scripts provide the web application and server-side workflows.
-- MySQL stores users, pets, appointments, medical records, community posts, likes, and comments.
-- JavaScript provides modal authentication forms and asynchronous community interactions.
-- `database/happy_paws_schema.sql` creates the database schema and seeds synthetic demonstration data.
-- Authentication uses `password_hash()` and `password_verify()`, prepared statements, PHP sessions, and user/admin roles.
-- The main implemented areas are registration/login, customer and admin views, appointment requests and approval, read-only pet medical records, and community posts, likes, and comments.
+## Technology Stack
 
-This architecture and the listed modules were verified by source inspection. Runtime behavior was not fully re-tested during recovery, so individual features should be described as implemented in the prototype rather than guaranteed production functionality.
+- **Backend:** PHP
+- **Database:** MySQL
+- **Frontend:** HTML, CSS, JavaScript
+- **Architecture:** Server-rendered PHP pages, form handlers, relational database, and client-side JavaScript interactions
 
-## Local setup requirements
+## Core Features
 
-1. Use a PHP-capable web server such as Apache, Nginx with PHP-FPM, IIS, or an equivalent local stack.
-2. Use MySQL or MariaDB with the `mysqli` extension enabled in PHP. Some handlers use `mysqli_stmt::get_result()`, which commonly requires `mysqlnd`.
-3. Serve the project at `/AppPaws` unless the hardcoded application paths are updated.
-4. Ensure the configured database account can create the `happy_paws` database, tables, foreign keys, and trigger.
-5. Open `/AppPaws/init.php` once to initialize the schema and seed data, then remove or restrict access to that script.
-6. Create a writable `uploads/` directory if testing community image uploads. Image-upload validation is not implemented.
-7. Enable JavaScript in the browser.
+### User Authentication and Authorization
 
-The repository does not include Composer/npm dependencies, a deployment configuration, or automated tests. The existing PHP/MySQL architecture is not directly deployable to Vercel without changing the backend hosting model.
+- User registration and login using PHP and MySQL.
+- Password hashing and verification through PHP's password functions.
+- Session-based authentication with customer and administrator roles.
+- Separate administrative dashboard for managing clinic-related information.
 
-## Known limitations
+### Appointment Management
 
-These are known limitations of the recovered academic prototype, not claims of production readiness:
+- Appointment requests containing pet information, consultation dates, and reasons for visits.
+- Pet identification and appointment records stored in MySQL.
+- Date and appointment-capacity validation.
+- Administrative approval and rejection of pending appointments.
 
-- `init.php` and database credentials are suitable only for a local demonstration environment.
-- State-changing endpoints do not consistently implement CSRF protection.
-- The appointment approval endpoint requires additional authorization checks before public exposure.
-- File uploads lack server-side type, size, and content validation.
-- Several outputs require stronger escaping before public hosting.
-- Registration and some legacy community handlers require functional cleanup.
-- Appointment capacity validation, transactions, and server-side input validation are limited.
-- The medical-record view is primarily read-only and uses seeded demonstration records.
+### Pet Medical Records
 
-## Responsibility and resume attribution
+- Relational storage of pet details and medical histories.
+- Customer-specific record viewing based on associated accounts.
+- Administrator access to registered pet records.
+- Read-only medical history interface using demonstration records.
 
-Reported responsibility: lead developer. The repository supports the existence of the integrated PHP/MySQL modules described above, but source code alone cannot establish which individual authored each component. Teammate contributions primarily covered frontend design, documentation, and presentation, according to the project context.
+### Community Forum
 
-## Resume entry - V0
+- Community posts and image attachments.
+- Post likes and comments.
+- Database-backed storage and retrieval of community interactions.
+- JavaScript-based interactive controls.
 
-**AppPaws - Veterinary Clinic Management System** | PHP, MySQL, JavaScript, HTML, CSS
-*Lead Developer | Academic Full-Stack Prototype*
+## Database Design
 
-- Led development of a PHP/MySQL veterinary clinic management prototype integrating appointment scheduling, pet medical records, and community interactions.
-- Implemented backend authentication using password hashing, prepared SQL statements, session management, and customer/admin role handling.
-- Integrated a relational MySQL database supporting users, pets, appointments, medical records, posts, likes, and comments.
+The relational MySQL database contains tables supporting:
 
-## Demo setup note
+- Users and account information
+- Pets and ownership relationships
+- Appointments
+- Medical records
+- Community posts
+- Likes and comments
 
-The original demo setup instructions and intentionally published demo-admin credentials are retained below for the academic recovery environment. Treat those credentials as public, demo-only credentials and never reuse them for a real deployment.
+The database schema is defined in `database/happy_paws_schema.sql` and includes foreign-key relationships and synthetic demonstration data.
+
+## Implementation
+
+The application uses PHP scripts to process form submissions, authenticate users, manage sessions, and execute MySQL queries.
+
+Prepared SQL statements are used across major database operations. JavaScript supports client-side interactions, including authentication forms and asynchronous community features.
+
+The system separates reusable components such as database connections, headers, and footers from account handlers and application pages.
+
+## Limitations
+
+- The application is an academic prototype and was not deployed for operational use by the veterinary clinic.
+- The database contains synthetic demonstration records rather than real clinic data.
+- Runtime functionality has not been fully reverified during repository recovery.
+- Some authentication, registration, and legacy community workflows require corrections.
+- Authorization checks, CSRF protection, output escaping, and file-upload validation require improvements before public deployment.
+- Database configuration and initialization scripts are intended for local demonstration and require hardening for hosted environments.
+- The medical records module primarily supports viewing existing records rather than complete clinical record management.
+- No automated test suite is currently included.
+
+**This repository is preserved as an academic development project and should not be deployed publicly in its current state.**
+
+## Reproducing the Project
+
+### Prerequisites
+
+- PHP-capable web server, such as Apache with PHP support
+- MySQL or MariaDB
+- PHP `mysqli` extension with `mysqlnd` support
+- Web browser with JavaScript enabled
+
+### Local Setup
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Zieroed/AppPaws.git
+   ```
+
+2. Place the application in the web server's document root so it is accessible under `/AppPaws`.
+
+3. Configure the local MySQL connection in the existing database configuration files.
+
+4. Initialize the demonstration database using the provided SQL schema or the existing `init.php` initialization script in an isolated local environment.
+
+5. Restrict or remove access to `init.php` after initialization.
+
+6. Create a writable `uploads/` directory if testing community image uploads. Use only synthetic demonstration content.
+
+7. Open the application locally:
+
+   ```text
+   http://localhost/AppPaws/
+   ```
+
+These instructions describe the expected local environment. They have not been fully verified through a fresh installation.
+
+## Project Contributions
+
+**Role: Lead Developer**
+
+Led the development and integration of the application's PHP/MySQL backend, database-driven modules, and overall web application functionality.
+
+Collaborated with four other team members on project requirements, frontend design, documentation, and presentation.
+
+The project was developed as a collaborative academic requirement, with individual contributions described according to the team's reported responsibilities.
